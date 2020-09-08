@@ -16,10 +16,14 @@ app.use(authRoutes);
 app.use(trackRoutes);
 
 const mongoUri=process.env.DB_HOST
-
+if (!mongoUri) {
+  throw new Error(
+    `MongoURI was not supplied.  Make sure you watch the video on setting up Mongo DB!`
+  );
+}
 mongoose.connect(mongoUri,{
-    useCreateIndex: true,
     useNewUrlParser:true,
+    useCreateIndex: true,
     useUnifiedTopology: true
 });
 
@@ -37,5 +41,5 @@ app.get("/",requireAuth,(req,res)=>{
 });
 
 app.listen(3000,()=>{
-    console.log("Listening to 3000 port");
+    console.log("Listening on 3000 port");
 })
